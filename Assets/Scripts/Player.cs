@@ -14,14 +14,17 @@ public class Player : MonoBehaviour {
   }
 
   private void Update() {
+    if (!GameLogic.playing) return;
     transform.position += velocity * Time.deltaTime; // Update the position based on the velocity
-    velocity.y -= Gravity * Time.deltaTime; // Gravity applies only to Y axis of the velocity
+    if (transform.position.y > -4.5f)
+      velocity.y -= Gravity * Time.deltaTime; // Gravity applies only to Y axis of the velocity
 
-    if (transform.position.y <= -4.5f) { // -4.5f is our ground, are we below the ground?
+    if (transform.position.y <= -4.5f && velocity.y <= 0) { // -4.5f is our ground, are we below the ground and going down?
       velocity.y *= -1; // Yes, change the sign of the velocity to bounce
       transform.position.Set(transform.position.x, -4.45f, transform.position.z); // Set a minimum vertical value to avoid errors
       velocity *= EnergyLoss; // Reduce the energy (on both axes)
     }
+    if (velocity.x < 0.01f) velocity = Vector3.zero;
   }
 
 
