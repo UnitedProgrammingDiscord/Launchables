@@ -5,6 +5,8 @@ public class GameLogic : MonoBehaviour {
   public Camera cam;
   public int distance;
   public static bool playing;
+  public World world;
+
 
   private void Start() {
     Init();
@@ -16,6 +18,7 @@ public class GameLogic : MonoBehaviour {
     player.gameObject.SetActive(false); // Disable the player
     distance = 0; // Initialize th edistance to zero
     playing = false; // Set the status to "not playing"
+    world.Init(); // Initialize the world
   }
 
   private void Update() {
@@ -50,15 +53,16 @@ public class GameLogic : MonoBehaviour {
 
     // Set the calculated position of the camera
     cam.transform.position = cameraPos;
+
+    // Generate (if needed) some other parts of the world
+    world.Generate(player.transform.position.x + .5f * cam.orthographicSize);
   }
 
   void StartGame() {
-    Debug.Log("Game is started!");
     playing = true;
     player.Init();
   }
 
 
-  public UnityEngine.UI.Text dbg;
 }
 
